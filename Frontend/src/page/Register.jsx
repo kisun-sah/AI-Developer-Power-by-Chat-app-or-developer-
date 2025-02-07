@@ -1,81 +1,75 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from '../config/axios'
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/user.context';
+import axios from '../config/axios';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 
 const Register = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
-    const [ email, setEmail ] = useState('')
-    const [ password, setPassword ] = useState('')
-    const navigate = useNavigate()
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/user/register', { email, password });
+            console.log(response.data);
+            alert('Registration successful');
+            localStorage.setItem('token', response.data.token);
+            setUser(response.data.user);
+            navigate('/login');
+        } catch (error) {
+            console.error(error.response?.data || "Registration error");
+        }
+    };
 
-    function submitHandler(e) {
-      e.preventDefault();
-  
-      axios.post('http://localhost:3000/user/register', { email, password })
-          .then((res) => {
-              console.log('Response:', res.data);
-              localStorage.setItem('token', res.data.token);
-      alert('Register Successfull:', res.data);
-              navigate('/login');
-          })
-          .catch((err) => {
-              alert(err.response.data);
-          });
-  }
-  
-
-  return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create Account</h2>
-        <form onSubmit={submitHandler}>
-         
-
-          {/* Email Field */}
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              required
-            />
-          </div>
-
-          {/* Password Field */}
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 font-semibold">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={(e) => setPassword(e.target.value)} 
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-              required
-            />
-          </div>
-
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            Register
-          </button>
-        </form>
-
-        <p className="text-center mt-4 text-gray-600">
-          Already have an account?{' '}
-          <a href="/login" className="text-green-500 font-semibold hover:text-green-600">
-            Login here
-          </a>
-        </p>
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-white">
+            <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+                <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Create Account</h2>
+                <form onSubmit={submitHandler}>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
+                        <div className="flex items-center border border-gray-300 rounded p-3 bg-gray-100">
+                            <FaEnvelope className="text-gray-500 mr-2" />
+                            <input
+                                type="email"
+                                id="email"
+                                className="w-full bg-transparent focus:outline-none"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 mb-2" htmlFor="password">Password</label>
+                        <div className="flex items-center border border-gray-300 rounded p-3 bg-gray-100">
+                            <FaLock className="text-gray-500 mr-2" />
+                            <input
+                                type="password"
+                                id="password"
+                                className="w-full bg-transparent focus:outline-none"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full p-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        Register
+                    </button>
+                </form>
+                <p className="text-gray-600 mt-4 text-center">
+                    Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+                </p>
+            </div>
+        </div>
+    );
 };
 
 export default Register;

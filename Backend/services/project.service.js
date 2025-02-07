@@ -140,3 +140,15 @@ export const updateFileTree = async ({ projectId, fileTree }) => {
 
   return project;
 };
+
+export const deleteProject = async (projectId) => {
+  try {
+    const project = await projectModel.findByIdAndDelete(projectId);
+    if (!project) {
+      throw new Error('Project not found');
+    }
+    return project;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
