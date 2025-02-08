@@ -13,14 +13,18 @@
     "@reduxjs/toolkit": "^2.5.1",
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.0.3",
+    "@webcontainer/api": "^1.5.1-internal.8",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
+    "highlight.js": "^11.11.1",
+    "markdown-to-jsx": "^7.7.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
-    "remixicon": "^4.6.0"
+    "remixicon": "^4.6.0",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

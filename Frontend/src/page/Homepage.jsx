@@ -3,6 +3,7 @@ import { UserContext } from "../context/user.context";
 import { useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { FaTrash } from "react-icons/fa";
+import { RiTeamLine } from "react-icons/ri";
 import Header from "../component/header";
 import AI from "../assets/AIdeveloper.webp";
 
@@ -52,7 +53,7 @@ const Homepage = () => {
   }
 
   return (
-    <main className="relative min-h-screen bg-black text-white scroll-auto">
+    <main className="relative min-h-screen bg-gray-800 text-white scroll-auto">
       <Header />
       {/* AI-Themed Banner */}
       <section className="relative w-full h-96 mt-2  flex items-center justify-center bg-gradient-to-r from-purple-700 via-blue-500 to-purple-700 text-center shadow-lg">
@@ -61,12 +62,8 @@ const Homepage = () => {
           style={{ backgroundImage: `url(${AI})` }}
         ></div>
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
-            Revolutionizing the Future with AI
-          </h1>
-          <p className="text-lg md:text-xl mt-3 text-gray-300">
-            Innovate, Automate, Transform
-          </p>
+         
+        
         </div>
       </section>
 
@@ -90,9 +87,10 @@ const Homepage = () => {
                 className="flex-grow"
               >
                 <h2 className="font-semibold text-lg">{project.name}</h2>
-                <p className="text-sm text-gray-400">
-                  Collaborators: {project.users.length}
-                </p>
+                <p className="text-sm text-gray-400 flex items-center gap-1">
+  <RiTeamLine className="text-gray-400 text-lg" /> Collaborators: {project.users.length}
+</p>
+
               </div>
               <FaTrash
                 onClick={(e) => {
