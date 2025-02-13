@@ -155,7 +155,6 @@ const Project = () => {
       .then((res) => {
         setUsers(res.data.users);
         console.log(res.data.users);
-        
       })
       .catch((err) => {
         console.log(err);
