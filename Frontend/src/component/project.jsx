@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../context/user.context";
