@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/user.context";
 import { useNavigate } from "react-router-dom";
 import axios from "../config/axios";
 import { FaTrash } from "react-icons/fa";
 import { RiTeamLine } from "react-icons/ri";
+import { BrainCircuit } from "lucide-react"; // AI Icon
+import { motion } from "framer-motion"; // Animation Library
 import Header from "../component/header";
 import AI from "../assets/AIdeveloper.webp";
 
@@ -54,17 +58,14 @@ const Homepage = () => {
 
   return (
     <main className="relative min-h-screen bg-gray-800 text-white scroll-auto">
-      <Header />
+    <Header  />
       {/* AI-Themed Banner */}
-      <section className="relative w-full h-96 mt-2  flex items-center justify-center bg-gradient-to-r from-purple-700 via-blue-500 to-purple-700 text-center shadow-lg">
+      <section className="relative w-full h-96 mt-18  flex items-center justify-center bg-gradient-to-r from-purple-700 via-blue-500 to-purple-700 text-center shadow-lg">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-80"
           style={{ backgroundImage: `url(${AI})` }}
         ></div>
-        <div className="relative z-10">
-         
-        
-        </div>
+        <div className="relative z-10"></div>
       </section>
 
       {/* Project Section */}
@@ -88,9 +89,9 @@ const Homepage = () => {
               >
                 <h2 className="font-semibold text-lg">{project.name}</h2>
                 <p className="text-sm text-gray-400 flex items-center gap-1">
-  <RiTeamLine className="text-gray-400 text-lg" /> Collaborators: {project.users.length}
-</p>
-
+                  <RiTeamLine className="text-gray-400 text-lg" />{" "}
+                  Collaborators: {project.users.length}
+                </p>
               </div>
               <FaTrash
                 onClick={(e) => {
@@ -142,6 +143,53 @@ const Homepage = () => {
           </div>
         </div>
       )}
+
+      {/* section for conent */}
+      <section className="relative py-16 bg-gray-900 text-white">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        
+        {/* AI Icon with Animation */}
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex justify-center mb-4"
+        >
+          <BrainCircuit size={60} className="text-blue-400" />
+        </motion.div>
+
+        {/* Section Title */}
+        <h2 className="text-3xl font-bold mb-4">
+          AI-Powered Innovations 🚀
+        </h2>
+
+        {/* AI Content with Motion Animation */}
+        <motion.p 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-lg text-gray-300"
+        >
+          Explore cutting-edge AI-driven solutions that enhance automation, 
+          decision-making, and efficiency. Our AI-powered projects integrate 
+          intelligent algorithms to deliver smarter and more adaptive experiences.
+        </motion.p>
+
+        {/* CTA Button */}
+        <motion.a 
+          href="#projects" 
+          className="mt-6 inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 
+                     text-white font-semibold rounded-lg shadow-md transition-transform 
+                     transform hover:scale-105"
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Explore AI Projects
+        </motion.a>
+
+      </div>
+    </section>
     </main>
   );
 };
