@@ -83,6 +83,19 @@ const Project = () => {
       });
   }
 
+  // Load messages from localStorage
+  useEffect(() => {
+    const storedMessages = localStorage.getItem(`messages_${project._id}`);
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, [project._id]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(`messages_${project._id}`, JSON.stringify(messages));
+  }, [messages, project._id]);
+
   // Send a message in the project chat
   const send = () => {
     sendMessage("project-message", {
@@ -178,11 +191,7 @@ const Project = () => {
       });
   }
 
-  // Scroll to the bottom of the message box
-  function scrollToBottom() {
-    messageBox.current.scrollTop = messageBox.current.scrollHeight;
-  }
-
+   // remove  the updated file tree
   const removeFile = (fileName) => {
     axios
       .delete(`/projects/remove-file-tree/${project._id}`)
@@ -197,10 +206,20 @@ const Project = () => {
         }
       })
       .catch((err) => {
-        console.error("Error removing file:", err.response?.data || err.message);
+        console.error(
+          "Error removing file:",
+          err.response?.data || err.message
+        );
       });
   };
-  
+
+
+  // Delete chat history
+  const deleteChatHistory = () => {
+    localStorage.removeItem(`messages_${project._id}`);
+    setMessages([]);
+    alert("Chat history deleted successfully");
+  };
 
   return (
     <main className="h-screen w-screen flex">
@@ -210,6 +229,9 @@ const Project = () => {
           <button className="flex gap-2" onClick={() => setIsModalOpen(true)}>
             <i className="ri-add-fill mr-1"></i>
             <p>Add collaborator</p>
+          </button>
+          <button onClick={deleteChatHistory} className="p-2 text-red-600">
+            <i className="ri-delete-bin-fill"></i>
           </button>
           <button
             onClick={() => setIsSidePanelOpen(!isSidePanelOpen)}
