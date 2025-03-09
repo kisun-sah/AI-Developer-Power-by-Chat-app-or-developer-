@@ -183,6 +183,25 @@ const Project = () => {
     messageBox.current.scrollTop = messageBox.current.scrollHeight;
   }
 
+  const removeFile = (fileName) => {
+    axios
+      .delete(`/projects/remove-file-tree/${project._id}`)
+      .then((res) => {
+        console.log(res.data);
+        const updatedFileTree = { ...fileTree };
+        delete updatedFileTree[fileName];
+        setFileTree(updatedFileTree);
+        setOpenFiles(openFiles.filter((file) => file !== fileName));
+        if (currentFile === fileName) {
+          setCurrentFile(null);
+        }
+      })
+      .catch((err) => {
+        console.error("Error removing file:", err.response?.data || err.message);
+      });
+  };
+  
+
   return (
     <main className="h-screen w-screen flex">
       {/* Left section for chat and collaborators */}
@@ -274,16 +293,26 @@ const Project = () => {
         <div className="explorer h-full max-w-64 min-w-52 bg-slate-200">
           <div className="file-tree w-full">
             {Object.keys(fileTree).map((file, index) => (
-              <button
+              <div
                 key={index}
-                onClick={() => {
-                  setCurrentFile(file);
-                  setOpenFiles([...new Set([...openFiles, file])]);
-                }}
-                className="tree-element cursor-pointer p-2 px-4 flex items-center gap-2 bg-slate-300 w-full"
+                className="tree-element flex items-center gap-2 bg-slate-300 w-full"
               >
-                <p className="font-semibold text-lg">{file}</p>
-              </button>
+                <button
+                  onClick={() => {
+                    setCurrentFile(file);
+                    setOpenFiles([...new Set([...openFiles, file])]);
+                  }}
+                  className="cursor-pointer p-2 px-4 flex-grow"
+                >
+                  <p className="font-semibold text-lg">{file}</p>
+                </button>
+                <button
+                  onClick={() => removeFile(file)}
+                  className="p-2 text-red-600"
+                >
+                  <i className="ri-close-fill"></i>
+                </button>
+              </div>
             ))}
           </div>
         </div>
@@ -292,15 +321,25 @@ const Project = () => {
           <div className="top flex justify-between w-full">
             <div className="files flex">
               {openFiles.map((file, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => setCurrentFile(file)}
-                  className={`open-file cursor-pointer p-2 px-4 flex items-center w-fit gap-2 bg-slate-300 ${
-                    currentFile === file ? "bg-slate-400" : ""
+                  className={`open-file flex items-center gap-2 ${
+                    currentFile === file ? "bg-slate-400" : "bg-slate-300"
                   }`}
                 >
-                  <p className="font-semibold text-lg">{file}</p>
-                </button>
+                  <button
+                    onClick={() => setCurrentFile(file)}
+                    className="cursor-pointer p-2 px-4 flex-grow"
+                  >
+                    <p className="font-semibold text-lg">{file}</p>
+                  </button>
+                  <button
+                    onClick={() => removeFile(file)}
+                    className="p-2 text-red-600"
+                  >
+                    <i className="ri-close-fill"></i>
+                  </button>
+                </div>
               ))}
             </div>
 

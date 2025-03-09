@@ -141,11 +141,33 @@ export const updateFileTree = async ({ projectId, fileTree }) => {
   return project;
 };
 
+export const removeFileTree = async (projectId) => {
+  if (!projectId) {
+    throw new Error("Project ID is required");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid Project ID");
+  }
+
+  const project = await projectModel.findOneAndUpdate(
+    { _id: projectId },
+    { $unset: { fileTree: "" } },
+    { new: true }
+  );
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  return project;
+};
+
 export const deleteProject = async (projectId) => {
   try {
     const project = await projectModel.findByIdAndDelete(projectId);
     if (!project) {
-      throw new Error('Project not found');
+      throw new Error("Project not found");
     }
     return project;
   } catch (err) {

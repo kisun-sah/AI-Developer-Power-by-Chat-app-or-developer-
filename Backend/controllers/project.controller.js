@@ -117,9 +117,24 @@ export const deleteProject = async (req, res) => {
 
     await projectService.deleteProject(projectId);
 
-    return res.status(200).json({ message: 'Project deleted successfully' });
+    return res.status(200).json({ message: "Project deleted successfully" });
   } catch (err) {
     console.log(err);
     res.status(400).json({ error: err.message });
   }
 };
+
+import { removeFileTree } from "../services/project.service.js";
+
+export const removeFileTreeController = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const project = await removeFileTree(projectId);
+
+    return res.status(200).json({ message: "File tree removed successfully", project });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
