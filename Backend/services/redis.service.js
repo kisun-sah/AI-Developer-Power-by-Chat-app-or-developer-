@@ -14,7 +14,7 @@ const createRedisClient = (retries = 5) => {
 
     redisClient.on('error', (err) => {
         console.error('Redis error:', err);
-        if (retries > 0) {
+        if (retries > 10) {
             console.log(`Retrying to connect to Redis... (${retries} retries left)`);
             setTimeout(() => createRedisClient(retries - 1), 5000);
         }
