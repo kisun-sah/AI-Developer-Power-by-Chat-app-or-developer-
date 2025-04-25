@@ -2,6 +2,7 @@ import projectModel from "../models/project.model.js";
 import * as projectService from "../services/project.service.js";
 import userModel from "../models/user.model.js";
 import { validationResult } from "express-validator";
+import { removeFileTree } from "../services/project.service.js";
 
 export const createProject = async (req, res) => {
   const errors = validationResult(req);
@@ -124,7 +125,7 @@ export const deleteProject = async (req, res) => {
   }
 };
 
-import { removeFileTree } from "../services/project.service.js";
+
 
 export const removeFileTreeController = async (req, res) => {
   try {

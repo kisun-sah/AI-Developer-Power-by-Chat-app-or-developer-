@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import * as projectController from "../controllers/project.controller.js";
 import * as authMiddleWare from "../middleware/auth.middleware.js";
+import { removeFileTree } from "../services/project.service.js";
 
 const router = Router();
 
@@ -47,14 +48,25 @@ router.delete(
   projectController.deleteProject
 );
 
+router.delete("/remove-file-tree/:projectId", async (req, res) => {
+  try {
+    const { projectId } = req.params; // Extract projectId from URL parameters
+    if (!projectId) {
+      console.error("Error: projectId is missing in the request."); // Log missing projectId
+      return res.status(400).json({ error: "projectId is required" });
+    }
 
-router.delete(
-  "/remove-file-tree/:projectId",
-  authMiddleWare.authUser,
-  projectController.removeFileTreeController
-);
-
+    const result = await removeFileTree({ projectId });
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in remove-file-tree route:", error.message); // Log route error
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 
 export default router;
+
+
+

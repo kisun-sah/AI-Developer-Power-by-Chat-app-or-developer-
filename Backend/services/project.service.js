@@ -141,11 +141,53 @@ export const updateFileTree = async ({ projectId, fileTree }) => {
   return project;
 };
 
+export const removeFileTree = async ({ projectId }) => {
+  if (!projectId) {
+    console.error("Error: projectId is required but not provided."); // Log the error
+    throw new Error("projectId is required");
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    console.error(`Error: Invalid projectId provided: ${projectId}`); // Log invalid ID
+    throw new Error("Invalid projectId");
+  }
+
+  try {
+    const project = await projectModel.findOneAndUpdate(
+      {
+        _id: projectId,
+      },
+      {
+        $unset: { fileTree: "" },
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!project) {
+      console.error(`Error: Project not found for projectId: ${projectId}`); // Log missing project
+      throw new Error("Project not found");
+    }
+
+    console.log(`File tree successfully removed for projectId: ${projectId}`); // Log success
+    return project;
+  } catch (error) {
+    console.error(
+      `Error removing file tree for projectId: ${projectId}`,
+      error
+    ); // Log unexpected errors
+    throw new Error(
+      error.message || "An error occurred while removing the file tree"
+    );
+  }
+};
+
 export const deleteProject = async (projectId) => {
   try {
     const project = await projectModel.findByIdAndDelete(projectId);
     if (!project) {
-      throw new Error('Project not found');
+      throw new Error("Project not found");
     }
     return project;
   } catch (err) {

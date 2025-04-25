@@ -7,10 +7,12 @@ import Register from '../page/Register'
 import Login from '../page/Login'
 import Project from '../component/project'
 import UserAuth from '../auth/User.Auth'
+import { Toaster } from 'react-hot-toast'
 
 const AppRoute = () => {
   return (
     <BrowserRouter>
+        <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<UserAuth><Homepage /></UserAuth>} />
         <Route path="/about" element={<AboutPage />} />
